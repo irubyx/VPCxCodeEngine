@@ -46,4 +46,20 @@ async function getBuckets() {
         });
 }
 
+function getItem(bucketName, itemName) {
+    console.log(`Retrieving item from bucket: ${bucketName}, key: ${itemName}`);
+    return cos.getObject({
+        Bucket: bucketName, 
+        Key: itemName
+    }).promise()
+    .then((data) => {
+        if (data != null) {
+            console.log('File Contents: ' + Buffer.from(data.Body).toString());
+        }    
+    })
+    .catch((e) => {
+        console.error(`ERROR: ${e.code} - ${e.message}\n`);
+    });
+}
+
 getBucketContents("codeengine-bucket-tests")
